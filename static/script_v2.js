@@ -1102,34 +1102,117 @@ async function generatePortfolioAnalysisWithLLM() {
         const prompt = `Please analyze this portfolio data and create a detailed but concise VISUAL report:
 ${JSON.stringify(portfolioData, null, 2)}
 
-Create a highly VISUAL report with minimal text using HTML components like cards, progress bars, color-coded indicators, and visual cues rather than paragraphs of text in Bristish English but keep currency as $ USD. Include:
+Create a highly VISUAL report with minimal text using HTML components like cards, progress bars, color-coded indicators, and visual cues rather than paragraphs of text in British English but keep currency as $ USD. 
 
-First give a Letter grade [A,F] including + and -. 
-1. A visual dashboard summary with key metrics using colored cards, icons, and visual indicators
-2. Risk assessment with a visual risk meter or rating system
-3. Growth projections with visual comparison indicators
-4. Market sentiment visualization, and list 3 - 4 key takeaways based on the user's allocation, short 1-2 sentences.
-5. Asset allocation recommendations with visual cues (arrows, icons)
+Use this exact HTML template structure, filling in the appropriate values from the portfolio data:
 
-VERY IMPORTANT: The report will be viewed in both light and dark mode, so ensure all colors and elements are properly visible in both themes by following these rules:
-- Use CSS classes instead of direct color values wherever possible
-- For text colors, use the following classes: text-green-600, text-red-600, text-blue-600, text-gray-600
-- For backgrounds, use bg-green-100, bg-red-100, bg-blue-100, bg-gray-100 for light mode cards
-- Add the 'dark:' variant to all colors (e.g., dark:text-green-400, dark:bg-gray-800)
-- For cards, use the class 'border border-custom rounded-lg p-4 mb-4'
-- For progress bars, ensure they have good contrast in both light and dark themes
-- Don't use light text on light backgrounds or dark text on dark backgrounds
+<div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg">
 
-Use HTML features like:
-- Cards with colored borders/backgrounds based on performance (green=good, red=caution)
-- Progress bars, gauges, and visual meters
-- Icons (✓, ⚠️, ↑, ↓) for quick visual assessment
-- Color-coding throughout to indicate performance
-- Visual rating systems (e.g., 5-star ratings)
-- Simple data visualization elements
+  <!-- Portfolio Grade -->
+  <div class="text-center mb-4">
+    <span class="text-3xl font-bold text-green-600 dark:text-green-400">[GRADE]</span>
+  </div>
 
-Format the report with HTML that creates a modern, visual dashboard experience with minimal reading required. Include proper HTML formatting tags but do not include opening/closing html, head, body tags.`;
+  <!-- Dashboard Summary -->
+  <div class="grid grid-cols-2 gap-4">
+    <div class="border border-custom rounded-lg p-4 mb-4 bg-green-100 dark:bg-gray-800">
+      <div class="flex items-center">
+        <span class="text-lg font-semibold text-green-600 dark:text-green-400">Five-Year Value</span>
+      </div>
+      <div class="text-2xl font-bold text-green-600 dark:text-green-400">[5YR-VALUE]</div>
+      <div class="flex items-center mt-2">
+        <span class="text-sm text-green-600 dark:text-green-400">Initial: [INITIAL-INVESTMENT]</span>
+      </div>
+    </div>
 
+    <div class="border border-custom rounded-lg p-4 mb-4 bg-blue-100 dark:bg-gray-800">
+      <div class="flex items-center">
+        <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">Ten-Year Value</span>
+      </div>
+      <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">[10YR-VALUE]</div>
+      <div class="flex items-center mt-2">
+        <span class="text-sm text-blue-600 dark:text-blue-400">Recurring: [RECURRING-AMOUNT]/[FREQUENCY]</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Assessment -->
+  <div class="border border-custom rounded-lg p-4 mb-4 bg-gray-100 dark:bg-gray-800">
+    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Risk Assessment</h2>
+    <div class="flex items-center mt-2">
+      <span class="text-xl mr-2">[RISK-ICON]</span>
+      <span class="text-gray-600 dark:text-gray-400">[RISK-LEVEL] Volatility ([VOLATILITY-VALUE])</span>
+    </div>
+  </div>
+
+  <!-- Growth Projections -->
+  <div class="border border-custom rounded-lg p-4 mb-4 bg-gray-100 dark:bg-gray-800">
+    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Growth Projections</h2>
+    <div class="grid grid-cols-2 gap-4 mt-2">
+      <div>
+        <span class="text-gray-600 dark:text-gray-400 block">5-Year Growth:</span>
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+          <div class="bg-green-600 dark:bg-green-400 h-2.5 rounded-full" style="width: [5YR-GROWTH-PCT-WIDTH]%"></div>
+        </div>
+        <span class="text-green-600 dark:text-green-400">[5YR-GROWTH-PCT]%</span>
+      </div>
+      <div>
+        <span class="text-gray-600 dark:text-gray-400 block">10-Year Growth:</span>
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+          <div class="bg-blue-600 dark:bg-blue-400 h-2.5 rounded-full" style="width: [10YR-GROWTH-PCT-WIDTH]%"></div>
+        </div>
+        <span class="text-blue-600 dark:text-blue-400">[10YR-GROWTH-PCT]%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market Sentiment -->
+  <div class="border border-custom rounded-lg p-4 mb-4 bg-gray-100 dark:bg-gray-800">
+    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Market Sentiment</h2>
+    <div class="flex items-center justify-between mt-2">
+      <span class="text-gray-600 dark:text-gray-400">Bearish</span>
+      <div class="w-1/2 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+        <div class="bg-blue-600 dark:bg-blue-400 h-2.5 rounded-full" style="width: [SENTIMENT-PCT]%"></div>
+      </div>
+      <span class="text-gray-600 dark:text-gray-400">Bullish</span>
+    </div>
+    <div class="mt-4">
+      <h3 class="text-md font-semibold text-gray-600 dark:text-gray-400">Key Takeaways:</h3>
+      <ul class="list-disc list-inside mt-2">
+        [KEY-TAKEAWAYS-LIST-ITEMS]
+      </ul>
+    </div>
+  </div>
+
+  <!-- Asset Allocation Recommendations -->
+  <div class="border border-custom rounded-lg p-4 bg-gray-100 dark:bg-gray-800">
+    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Asset Allocation</h2>
+    <div class="flex items-center justify-between mt-2">
+      <div>
+        <span class="text-3xl">[RECOMMENDATION-ICON]</span>
+        <span class="text-gray-600 dark:text-gray-400 font-bold">[RECOMMENDATION]</span>
+      </div>
+      <span class="text-gray-600 dark:text-gray-400">[CURRENT-ALLOCATION]</span>
+    </div>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+      [RECOMMENDATION-DETAILS]
+    </p>
+  </div>
+
+</div>
+
+Instructions:
+1. Grade the portfolio from A+ to F based on overall performance, diversification, and risk/return metrics.
+2. For risk assessment, use these icons: ✓ (Low), ⚠️ (Moderate), ⚠️⚠️ (High), ⚠️⚠️⚠️ (Very High).
+3. Calculate growth percentages properly from initial investment to projected values.
+4. Width percentages for progress bars should be capped at 100% even for high growth rates.
+5. For sentiment, convert the sentiment score (0-1) to a percentage (0-100%).
+6. Provide 3-4 key takeaways based on news sentiment and market conditions as list items.
+7. For recommendations, use icons: ✓ (Maintain), ↑ (Increase allocation), ↓ (Reduce allocation), ⚠️ (Rebalance).
+8. Keep all text concise and focused on visual elements.
+9. Ensure proper color contrast in both light and dark modes - don't use light text on light backgrounds or dark text on dark backgrounds.
+
+Complete the template by replacing all placeholder values [IN-BRACKETS] with the appropriate data from the portfolio.`;
 
         // Start loading indicator
         document.getElementById('portfolioReport').innerHTML = '<div class="loading">Generating portfolio analysis...</div>';
