@@ -1,0 +1,77 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+*.dylib
+*.dll
+
+# C extensions
+*.c
+*.o
+*.h
+
+# Distribution / packaging
+.eggs/
+dist/
+build/
+develop-eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache/
+nosetests.xml
+coverage.xml
+*.log
+
+# MyPy
+.mypy_cache/
+
+# Sphinx documentation
+docs/_build/
+
+# virtual environment
+.venv/
+venv/
+env/
+
+# IDE files
+.idea/
+*.iml
+*.suo
+*.csproj
+*.sln
+*.user
+*.userprefs
+*.pidb
+*.db
+*.cache
+.DS_Store
+
+# Package management files
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Other project specific files
+*.log  # Add this if you generate log files
+tmp/
+temp/
+output/
+logs/
+
+# Data files
+data/  # Customize data directories as needed
+datasets/
+images/
+
+
+# Files for testing
+test_*.py
+*_test.py
+*.pyc
