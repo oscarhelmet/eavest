@@ -1391,26 +1391,95 @@ If the portfolio doesn't have enough information to answer a question, explain w
     }
 }
 
+
+function openChatModal() {
+    const modal = document.getElementById('chatModal');
+    modal.classList.remove('hidden');
+    document.getElementById('chatInput').focus();
+    
+    // Prevent scrolling on the body when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeChatModal() {
+    const modal = document.getElementById('chatModal');
+    modal.classList.add('hidden');
+    
+    // Re-enable scrolling
+    document.body.style.overflow = '';
+}
+
+
+// Add to the existing JavaScript
+function setupChatInterface() {
+    const floatingBtn = document.getElementById('floatingChatBtn');
+    const chatModal = document.getElementById('chatModal');
+    const chatContainer = document.getElementById('chatContainer');
+    const closeChatBtn = document.getElementById('closeChatBtn');
+    
+    // Open chat modal
+    floatingBtn.addEventListener('click', function() {
+        chatModal.classList.remove('hidden');
+        floatingBtn.classList.add('active');
+        setTimeout(() => {
+            document.getElementById('chatInput').focus();
+        }, 300);
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+    
+    // Close chat modal
+    function closeChat() {
+        chatModal.classList.add('hidden');
+        floatingBtn.classList.remove('active');
+        document.body.style.overflow = ''; // Re-enable scrolling
+    }
+    
+    closeChatBtn.addEventListener('click', closeChat);
+    
+    // Close when clicking outside the chat container
+    chatModal.addEventListener('click', function(e) {
+        if (e.target === chatModal) {
+            closeChat();
+        }
+    });
+    
+    // Prevent propagation from chat container to modal
+    chatContainer.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+}
+
+
 function addChatMessage(message, sender, messageId) {
     const chatMessages = document.getElementById('chatMessages');
     const messageElement = document.createElement('div');
+    
+    // Apply different styling for user vs assistant messages with animation classes
     messageElement.className = sender === 'user' ? 
-        'bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-sm ml-auto max-w-[75%]' : 
-        'bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-sm max-w-[75%] markdown-content';
+        'bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-sm ml-auto max-w-[75%] user-message' : 
+        'bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-sm max-w-[75%] markdown-content assistant-message';
     
     if (messageId) {
         messageElement.id = messageId;
     }
     
-    // For user messages, just show the plain text
-    // For assistant messages, parse Markdown to HTML
-    if (sender === 'user') {
+    // Special handling for "Thinking..." message
+    if (sender === 'assistant' && message === 'Thinking...') {
+        messageElement.innerHTML = `
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        `;
+    } else if (sender === 'user') {
+        // Regular user message
         messageElement.innerHTML = `<p>${message}</p>`;
     } else {
-        // Use the marked library to convert Markdown to HTML
+        // Assistant message with markdown - keep your original markdown parsing
         messageElement.innerHTML = marked.parse(message);
         
-        // Add some CSS for better markdown styling
+        // Preserve your markdown styling
         const style = document.createElement('style');
         if (!document.getElementById('markdown-styles')) {
             style.id = 'markdown-styles';
@@ -1457,6 +1526,88 @@ function addChatMessage(message, sender, messageId) {
                     .markdown-content code { background: rgba(255,255,255,0.1); }
                     .markdown-content th, .markdown-content td { border-color: #444; }
                 }
+                
+                /* Chat animation styles */
+                @keyframes slideInRight {
+                  from {
+                    transform: translateX(30px) scale(0.9);
+                    opacity: 0;
+                  }
+                  70% {
+                    transform: translateX(-5px) scale(1.02);
+                  }
+                  to {
+                    transform: translateX(0) scale(1);
+                    opacity: 1;
+                  }
+                }
+                
+                @keyframes slideInLeft {
+                  from {
+                    transform: translateX(-30px) scale(0.9);
+                    opacity: 0;
+                  }
+                  70% {
+                    transform: translateX(5px) scale(1.02);
+                  }
+                  to {
+                    transform: translateX(0) scale(1);
+                    opacity: 1;
+                  }
+                }
+                
+                /* iMessage style for user messages */
+                .user-message {
+                  animation: slideInRight 0.3s ease-out forwards;
+                  transform-origin: bottom right;
+                  border-radius: 18px 18px 4px 18px !important;
+                  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                }
+                
+                /* iMessage style for assistant messages */
+                .assistant-message {
+                  animation: slideInLeft 0.3s ease-out forwards;
+                  transform-origin: bottom left;
+                  border-radius: 18px 18px 18px 4px !important;
+                  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                }
+                
+                /* Typing indicator when "Thinking..." */
+                .typing-indicator {
+                  display: inline-flex;
+                  align-items: flex-end;
+                  min-height: 16px;
+                }
+                
+                .typing-indicator span {
+                  width: 8px;
+                  height: 8px;
+                  margin: 0 1px;
+                  background-color: var(--primary-color);
+                  display: block;
+                  border-radius: 50%;
+                  opacity: 0.8;
+                  z-index: 1;
+                }
+                
+                .typing-indicator span:nth-child(1) {
+                  animation: typing 1s infinite;
+                }
+                .typing-indicator span:nth-child(2) {
+                  animation: typing 1s infinite 0.15s;
+                }
+                .typing-indicator span:nth-child(3) {
+                  animation: typing 1s infinite 0.3s;
+                }
+                
+                @keyframes typing {
+                  0%, 100% {
+                    transform: translateY(0);
+                  }
+                  50% {
+                    transform: translateY(-6px);
+                  }
+                }
             `;
             document.head.appendChild(style);
         }
@@ -1468,7 +1619,6 @@ function addChatMessage(message, sender, messageId) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-
 function removeChatMessage(messageId) {
     const message = document.getElementById(messageId);
     if (message) {
@@ -1476,7 +1626,7 @@ function removeChatMessage(messageId) {
     }
 }
 
-// Initialize on page load
+// Replace your existing DOMContentLoaded listener with this:
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the UI components
     initializeUI();
@@ -1484,20 +1634,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
     
-    // Initialize chat functionality
-    const chatInput = document.getElementById('chatInput');
-    const sendChatBtn = document.getElementById('sendChatBtn');
+    // Initialize chat functionality - ONLY USE THIS APPROACH
+    setupChatInterface();
     
-    sendChatBtn.addEventListener('click', sendChatMessage);
+    // Connect send button to existing send function
+    document.getElementById('sendChatBtn').addEventListener('click', sendChatMessage);
     
-    chatInput.addEventListener('keypress', function(e) {
+    // Connect enter key to send
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
             sendChatMessage();
         }
     });
 });
-
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', initializeUI);

@@ -178,29 +178,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="mt-6 border border-custom rounded-lg overflow-hidden">
-                    <div class="bg-gray-100 dark:bg-gray-800 p-3 border-b border-custom">
-                        <h3 class="font-semibold">Portfolio Assistant</h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Ask questions about your portfolio analysis</p>
-                    </div>
-                    <div id="chatMessages" class="p-4 max-h-80 overflow-y-auto space-y-3">
-                        <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-sm">
-                            <p>Hello! I'm your portfolio assistant. After analysing your portfolio, I can answer specific questions about your investments, risk assessment, or potential strategies. What would you like to know?</p>
-                        </div>
-                    </div>
-                    <div class="p-3 border-t border-custom">
-                        <div class="flex">
-                            <input type="text" id="chatInput" placeholder="Ask a question about your portfolio..." class="flex-1 p-2 rounded-l border-l border-t border-b text-base" />
-                            <button id="sendChatBtn" class="btn-primary rounded-r px-4">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-
-
             </div>
 
             <!-- Analysis and Results Panel -->
@@ -313,6 +290,40 @@
             </div>
         </div>
     </div>
+
+    <!-- Floating chat button -->
+    <div id="floatingChatBtn" class="fixed bottom-6 left-6 z-50 shadow-lg rounded-full bg-black bg-opacity-70 hover:bg-opacity-90 text-white p-3 px-4 cursor-pointer transition-all duration-300 flex items-center space-x-2">
+        <i class="fas fa-robot text-lg"></i>
+        <span class="text-sm font-medium">AI Assistant</span>
+    </div>
+
+    <!-- Chat modal overlay -->
+    <div id="chatModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden transition-opacity duration-300">
+        <div id="chatContainer" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-4/5 h-4/5 max-w-6xl flex flex-col overflow-hidden transform transition-transform duration-300 scale-95">
+            <div class="bg-gray-100 dark:bg-gray-700 p-4 border-b border-custom flex justify-between items-center">
+                <h3 class="font-semibold text-lg">Portfolio Assistant</h3>
+                <button id="closeChatBtn" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chatMessages" class="p-4 overflow-y-auto space-y-3 flex-grow">
+                <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg text-sm">
+                    <p>Hello! I'm your portfolio assistant. After analysing your portfolio, I can answer specific questions about your investments, risk assessment, or potential strategies. What would you like to know?</p>
+                </div>
+            </div>
+            <div class="p-4 border-t border-custom">
+                <div class="flex">
+                    <input type="text" id="chatInput" placeholder="Ask a question about your portfolio..." 
+                        class="flex-1 p-3 rounded-l border-l border-t border-b text-base" />
+                    <button id="sendChatBtn" class="btn-primary rounded-r px-5">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <footer class="mt-8 py-4 text-center text-sm text-gray-600 dark:text-gray-400 border-t border-custom">
         &copy; <span id="currentYear"></span> Eavest by <a href="https://www.oscarsoai.com" class="text-primary-600 hover:underline">Oscar So</a>. All rights reserved.

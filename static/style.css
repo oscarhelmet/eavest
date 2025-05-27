@@ -52,6 +52,16 @@
         background-color: var(--card-dark);
         border-color: var(--border-dark);
     }
+    .loading {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    .spinner {
+        border: 5px solid rgba(255, 255, 255, 0.1);
+        border-top: 5px solid var(--primary-color);
+    }
+    .typing-indicator::before {
+        background-color: rgba(40, 40, 40, 0.5);
+    }
 }
 
 @media (prefers-color-scheme: light) {
@@ -96,8 +106,19 @@
         background-color: var(--card-light);
         border-color: var(--border-light);
     }
+    .loading {
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+    .spinner {
+        border: 5px solid rgba(0, 0, 0, 0.1);
+        border-top: 5px solid var(--primary-color);
+    }
+    .typing-indicator::before {
+        background-color: rgba(240, 240, 240, 0.8);
+    }
 }
 
+/* UI Elements */
 .btn-primary {
     background-color: var(--primary-color);
     color: white;
@@ -105,6 +126,11 @@
 
 .btn-primary:hover {
     background-color: #4a49b8;
+}
+
+.tab {
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .sentiment-meter {
@@ -139,6 +165,7 @@
     transition: left 0.5s ease;
 }
 
+/* Range Input Styling */
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
@@ -168,11 +195,7 @@ input[type="range"]::-moz-range-thumb {
     cursor: pointer;
 }
 
-.tab {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
+/* Chart and Loading Elements */
 .chart-container {
     position: relative;
     height: 200px;
@@ -188,22 +211,14 @@ input[type="range"]::-moz-range-thumb {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 255, 255, 0.8);
     z-index: 100;
 }
 
 .spinner {
-    border: 5px solid rgba(0, 0, 0, 0.1);
-    border-top: 5px solid var(--primary-color);
     border-radius: 50%;
     width: 30px;
     height: 30px;
     animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 .portfolio-composition {
@@ -232,12 +247,200 @@ input[type="range"]::-moz-range-thumb {
     transition: opacity 0.3s;
 }
 
-@media (prefers-color-scheme: dark) {
-    .loading {
-        background-color: rgba(0, 0, 0, 0.5);
+/* Chat Interface Animations */
+
+/* Floating Chat Button */
+#floatingChatBtn {
+    transition: all 0.2s ease-out;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s infinite;
+    will-change: transform, box-shadow;
+}
+
+#floatingChatBtn:hover {
+    transform: scale(1.1);
+}
+
+#floatingChatBtn.active {
+    transform: scale(0.9); 
+    opacity: 0;
+    transition: opacity 0.15s ease-out, transform 0.2s ease-out;
+}
+
+/* Chat Modal */
+#chatModal {
+    transition: opacity 0.15s ease-in-out;
+    display: flex;
+}
+
+#chatModal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Chat Container */
+#chatContainer {
+    transition: transform 0.2s ease-out, opacity 0.15s ease-in-out;
+    opacity: 0;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.25);
+    will-change: transform, opacity;
+}
+
+#chatModal:not(.hidden) #chatContainer {
+    transform: scale(1);
+    opacity: 1;
+    animation: slideUp 0.25s ease-out forwards;
+}
+
+/* Chat Bubble Styles */
+.user-message {
+    animation: slideInRight 0.3s ease-out forwards;
+    transform-origin: bottom right;
+    border-radius: 18px 18px 4px 18px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.assistant-message {
+    animation: slideInLeft 0.3s ease-out forwards;
+    transform-origin: bottom left;
+    border-radius: 18px 18px 18px 4px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Thinking Animation */
+.typing-indicator {
+    display: inline-flex;
+    align-items: flex-end;
+    padding: 10px 16px;
+    border-radius: 18px 18px 18px 4px;
+    background: rgba(93, 92, 222, 0.1);
+    margin-top: 5px;
+    position: relative;
+    animation: slideInLeft 0.3s ease-out forwards;
+}
+
+.typing-indicator::before {
+    content: "";
+    width: 38px;
+    height: 16px;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 6px;
+    left: 10px;
+    z-index: 0;
+}
+
+.typing-indicator span {
+    width: 8px;
+    height: 8px;
+    margin: 0 1px;
+    background-color: var(--primary-color);
+    display: block;
+    border-radius: 50%;
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.typing-indicator span:nth-child(1) {
+    animation: typing 1s infinite;
+}
+.typing-indicator span:nth-child(2) {
+    animation: typing 1s infinite 0.15s;
+}
+.typing-indicator span:nth-child(3) {
+    animation: typing 1s infinite 0.3s;
+}
+
+/* Message Delay Animation */
+#chatMessages > div:nth-child(2) {
+    animation-delay: 0.1s;
+}
+#chatMessages > div:nth-child(3) {
+    animation-delay: 0.2s;
+}
+#chatMessages > div:nth-child(4) {
+    animation-delay: 0.3s;
+}
+#chatMessages > div:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+/* Keyframe Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px) scale(0.98);
+        opacity: 0;
     }
-    .spinner {
-        border: 5px solid rgba(255, 255, 255, 0.1);
-        border-top: 5px solid var(--primary-color);
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(93, 92, 222, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(93, 92, 222, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(93, 92, 222, 0);
+    }
+}
+
+@keyframes typing {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(30px) scale(0.9);
+        opacity: 0;
+    }
+    70% {
+        transform: translateX(-5px) scale(1.02);
+    }
+    to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-30px) scale(0.9);
+        opacity: 0;
+    }
+    70% {
+        transform: translateX(5px) scale(1.02);
+    }
+    to {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #chatContainer {
+        width: 90% !important;
+        height: 90% !important;
+        max-height: 90vh;
+    }
+    
+    #floatingChatBtn {
+        bottom: 4rem;
+        left: 1rem;
     }
 }
