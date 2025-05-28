@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug File Upload</title>
+    <style>
+        .dropzone {
+            border: 2px dashed #ccc;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug File Upload</h1>
+    
+    <div class="dropzone" id="simpleUploadArea">
+        <div>
+            <p>Drag & drop your chart image or click to browse</p>
+            <p>Supports: JPG, PNG, WebP</p>
+            <p>Or paste from clipboard (Ctrl+V / Cmd+V)</p>
+            <input type="file" id="simpleFileInput" class="hidden" accept="image/*">
+        </div>
+    </div>
+    
+    <div id="debug"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const simpleUploadArea = document.getElementById('simpleUploadArea');
+            const simpleFileInput = document.getElementById('simpleFileInput');
+            const debugDiv = document.getElementById('debug');
+            
+            function log(message) {
+                console.log(message);
+                const p = document.createElement('p');
+                p.textContent = message;
+                debugDiv.appendChild(p);
+            }
+            
+            log('DOM loaded');
+            log('simpleUploadArea: ' + (simpleUploadArea ? 'found' : 'not found'));
+            log('simpleFileInput: ' + (simpleFileInput ? 'found' : 'not found'));
+            
+            if (simpleUploadArea && simpleFileInput) {
+                simpleUploadArea.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    log('Upload area clicked');
+                    try {
+                        simpleFileInput.click();
+                        log('Clicked file input');
+                    } catch (err) {
+                        log('Error clicking file input: ' + err.message);
+                    }
+                });
+                
+                simpleFileInput.addEventListener('change', (e) => {
+                    log('File input change triggered');
+                    if (e.target.files && e.target.files.length > 0) {
+                        const file = e.target.files[0];
+                        log('File selected: ' + file.name);
+                    }
+                });
+                
+                // Test for stopPropagation
+                document.addEventListener('click', () => {
+                    log('Document click event fired');
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

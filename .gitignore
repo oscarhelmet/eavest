@@ -75,3 +75,6 @@ images/
 test_*.py
 *_test.py
 *.pyc
+
+.env
+uwsgi.ini

@@ -114,26 +114,6 @@ input, select, textarea {
     transition: width 0.5s ease;
 }
 
-/* Volatility Meter */
-.volatility-meter {
-    height: 10px;
-    background: linear-gradient(to right, var(--success-color), var(--warning-color), var(--danger-color));
-    border-radius: 9999px;
-    position: relative;
-}
-
-.volatility-indicator {
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border: 2px solid var(--primary-color);
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -100%);
-    transition: left 0.5s ease;
-}
-
 /* Range Input Styling */
 input[type="range"] {
     -webkit-appearance: none;
@@ -757,20 +737,4 @@ body.tech-analysis-prototype {
     background-color: white;
     right: 0;
     bottom: 0;
-}
-
-.hidden {
-    display: none;
-}
-
-/* File input specific style */
-input[type="file"].hidden {
-    display: block !important;
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    z-index: -1;
 }

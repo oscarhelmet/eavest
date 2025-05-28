@@ -360,9 +360,10 @@ function removeAsset(index) {
 }
 
 function updateAssetList() {
+
+
     const assetList = document.getElementById('assetList');
     assetList.innerHTML = '';
-    
     if (state.assets.length === 0) {
         assetList.innerHTML = '<div class="text-sm text-gray-500 dark:text-gray-400">No assets added yet</div>';
         return;
@@ -921,7 +922,7 @@ function updatePortfolioSummary() {
             <p class="mb-2">Portfolio Composition:</p>
             <div class="flex flex-wrap gap-2">
                 ${state.assets.map(asset => `
-                    <div class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-sm">
+                    <div class="px-2 py-1 bg-green-200 dark:bg-green-200 rounded text-sm">
                         ${asset.symbol}: ${asset.allocation}%
                     </div>
                 `).join('')}
@@ -1105,96 +1106,95 @@ ${JSON.stringify(portfolioData, null, 2)}
 Create a highly VISUAL report with minimal text using HTML components like cards, progress bars, color-coded indicators, and visual cues rather than paragraphs of text in British English but keep currency as $ USD. 
 
 Use this exact HTML template structure, filling in the appropriate values from the portfolio data:
-
-<div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg">
+<div class="glass-card p-4">
 
   <!-- Portfolio Grade -->
   <div class="text-center mb-4">
-    <span class="text-3xl font-bold text-green-600 dark:text-green-400">[GRADE]</span>
+    <span class="text-3xl font-bold" style="color: var(--success-color);">[GRADE]</span>
   </div>
 
   <!-- Dashboard Summary -->
   <div class="grid grid-cols-2 gap-4">
-    <div class="border border-custom rounded-lg p-4 mb-4 bg-green-100 dark:bg-gray-800">
+    <div class="analysis-card border border-custom mb-4">
       <div class="flex items-center">
-        <span class="text-lg font-semibold text-green-600 dark:text-green-400">Five-Year Value</span>
+        <span class="text-lg font-semibold" style="color: var(--success-color);">Five-Year Value</span>
       </div>
-      <div class="text-2xl font-bold text-green-600 dark:text-green-400">[5YR-VALUE]</div>
+      <div class="text-2xl font-bold" style="color: var(--success-color);">[5YR-VALUE]</div>
       <div class="flex items-center mt-2">
-        <span class="text-sm text-green-600 dark:text-green-400">Initial: [INITIAL-INVESTMENT]</span>
+        <span class="text-sm" style="color: var(--success-color);">Initial: [INITIAL-INVESTMENT]</span>
       </div>
     </div>
 
-    <div class="border border-custom rounded-lg p-4 mb-4 bg-blue-100 dark:bg-gray-800">
+    <div class="analysis-card border border-custom mb-4">
       <div class="flex items-center">
-        <span class="text-lg font-semibold text-blue-600 dark:text-blue-400">Ten-Year Value</span>
+        <span class="text-lg font-semibold" style="color: var(--info-color);">Ten-Year Value</span>
       </div>
-      <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">[10YR-VALUE]</div>
+      <div class="text-2xl font-bold" style="color: var(--info-color);">[10YR-VALUE]</div>
       <div class="flex items-center mt-2">
-        <span class="text-sm text-blue-600 dark:text-blue-400">Recurring: [RECURRING-AMOUNT]/[FREQUENCY]</span>
+        <span class="text-sm" style="color: var(--info-color);">Recurring: [RECURRING-AMOUNT]/[FREQUENCY]</span>
       </div>
     </div>
   </div>
 
   <!-- Risk Assessment -->
-  <div class="border border-custom rounded-lg p-4 mb-4 bg-gray-100 dark:bg-gray-800">
-    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Risk Assessment</h2>
+  <div class="analysis-card border border-custom mb-4">
+    <h2 class="text-lg font-semibold" style="color: var(--text-light);">Risk Assessment</h2>
     <div class="flex items-center mt-2">
       <span class="text-xl mr-2">[RISK-ICON]</span>
-      <span class="text-gray-600 dark:text-gray-400">[RISK-LEVEL] Volatility ([VOLATILITY-VALUE])</span>
+      <span style="color: var(--text-light);">[RISK-LEVEL] Volatility ([VOLATILITY-VALUE])</span>
     </div>
   </div>
 
   <!-- Growth Projections -->
-  <div class="border border-custom rounded-lg p-4 mb-4 bg-gray-100 dark:bg-gray-800">
-    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Growth Projections</h2>
+  <div class="analysis-card border border-custom mb-4">
+    <h2 class="text-lg font-semibold" style="color: var(--text-light);">Growth Projections</h2>
     <div class="grid grid-cols-2 gap-4 mt-2">
       <div>
-        <span class="text-gray-600 dark:text-gray-400 block">5-Year Growth:</span>
-        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-          <div class="bg-green-600 dark:bg-green-400 h-2.5 rounded-full" style="width: [5YR-GROWTH-PCT-WIDTH]%"></div>
+        <span style="color: var(--text-light);" class="block">5-Year Growth:</span>
+        <div class="w-full" style="background: var(--border-color); border-radius: 9999px; height: 10px;">
+          <div style="background: var(--success-color); border-radius: 9999px; height: 10px; width: [5YR-GROWTH-PCT-WIDTH]%"></div>
         </div>
-        <span class="text-green-600 dark:text-green-400">[5YR-GROWTH-PCT]%</span>
+        <span style="color: var(--success-color);">[5YR-GROWTH-PCT]%</span>
       </div>
       <div>
-        <span class="text-gray-600 dark:text-gray-400 block">10-Year Growth:</span>
-        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-          <div class="bg-blue-600 dark:bg-blue-400 h-2.5 rounded-full" style="width: [10YR-GROWTH-PCT-WIDTH]%"></div>
+        <span style="color: var(--text-light);" class="block">10-Year Growth:</span>
+        <div class="w-full" style="background: var(--border-color); border-radius: 9999px; height: 10px;">
+          <div style="background: var(--info-color); border-radius: 9999px; height: 10px; width: [10YR-GROWTH-PCT-WIDTH]%"></div>
         </div>
-        <span class="text-blue-600 dark:text-blue-400">[10YR-GROWTH-PCT]%</span>
+        <span style="color: var(--info-color);">[10YR-GROWTH-PCT]%</span>
       </div>
     </div>
   </div>
 
   <!-- Market Sentiment -->
-  <div class="border border-custom rounded-lg p-4 mb-4 bg-gray-100 dark:bg-gray-800">
-    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Market Sentiment</h2>
+  <div class="analysis-card border border-custom mb-4">
+    <h2 class="text-lg font-semibold" style="color: var(--text-light);">Market Sentiment</h2>
     <div class="flex items-center justify-between mt-2">
-      <span class="text-gray-600 dark:text-gray-400">Bearish</span>
-      <div class="w-1/2 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-        <div class="bg-blue-600 dark:bg-blue-400 h-2.5 rounded-full" style="width: [SENTIMENT-PCT]%"></div>
+      <span style="color: var(--text-light);">Bearish</span>
+      <div class="w-1/2" style="background: var(--border-color); border-radius: 9999px; height: 10px;">
+        <div style="background: var(--info-color); border-radius: 9999px; height: 10px; width: [SENTIMENT-PCT]%"></div>
       </div>
-      <span class="text-gray-600 dark:text-gray-400">Bullish</span>
+      <span style="color: var(--text-light);">Bullish</span>
     </div>
     <div class="mt-4">
-      <h3 class="text-md font-semibold text-gray-600 dark:text-gray-400">Key Takeaways:</h3>
-      <ul class="list-disc list-inside mt-2">
+      <h3 class="text-md font-semibold" style="color: var(--text-light);">Key Takeaways:</h3>
+      <ul class="list-disc list-inside mt-2" style="color: var(--text-light);">
         [KEY-TAKEAWAYS-LIST-ITEMS]
       </ul>
     </div>
   </div>
 
   <!-- Asset Allocation Recommendations -->
-  <div class="border border-custom rounded-lg p-4 bg-gray-100 dark:bg-gray-800">
-    <h2 class="text-lg font-semibold text-gray-600 dark:text-gray-400">Asset Allocation</h2>
+  <div class="analysis-card border border-custom">
+    <h2 class="text-lg font-semibold" style="color: var(--text-light);">Asset Allocation</h2>
     <div class="flex items-center justify-between mt-2">
       <div>
         <span class="text-3xl">[RECOMMENDATION-ICON]</span>
-        <span class="text-gray-600 dark:text-gray-400 font-bold">[RECOMMENDATION]</span>
+        <span style="color: var(--text-light);" class="font-bold">[RECOMMENDATION]</span>
       </div>
-      <span class="text-gray-600 dark:text-gray-400">[CURRENT-ALLOCATION]</span>
+      <span style="color: var(--text-light);">[CURRENT-ALLOCATION]</span>
     </div>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+    <p class="text-sm mt-2" style="color: var(--text-light);">
       [RECOMMENDATION-DETAILS]
     </p>
   </div>
@@ -1383,6 +1383,9 @@ If the portfolio doesn't have enough information to answer a question, explain w
         // Replace thinking message with final response
         removeChatMessage(thinkingId);
         addChatMessage(result.message, 'assistant');
+        
+        // Display sources and search suggestions if available
+        displaySources(result.sources, result.search_suggestions);
         
     } catch (err) {
         console.error("Error sending chat message:", err);
@@ -1623,6 +1626,69 @@ function removeChatMessage(messageId) {
     const message = document.getElementById(messageId);
     if (message) {
         message.remove();
+    }
+}
+
+/**
+ * Display sources and search suggestions for AI responses
+ * @param {Array} sources - Array of source objects with uri and title
+ * @param {string} searchSuggestions - HTML content for search suggestions
+ */
+function displaySources(sources, searchSuggestions) {
+    // Create sources container if it doesn't exist
+    let sourcesContainer = document.getElementById('sourcesContainer');
+    if (!sourcesContainer) {
+        sourcesContainer = document.createElement('div');
+        sourcesContainer.id = 'sourcesContainer';
+        sourcesContainer.className = 'mt-3 p-3 bg-gray-50 dark:bg-gray-800 rounded border border-custom';
+        
+        // Insert after the chatMessages container
+        const chatMessages = document.getElementById('chatMessages');
+        if (chatMessages) {
+            chatMessages.parentNode.insertBefore(sourcesContainer, chatMessages.nextSibling);
+        }
+    }
+    
+    // Clear previous content
+    sourcesContainer.innerHTML = '';
+    
+    // Add sources if available
+    if (sources && sources.length > 0) {
+        const sourcesTitle = document.createElement('h4');
+        sourcesTitle.className = 'font-semibold mb-2';
+        sourcesTitle.textContent = 'Sources:';
+        sourcesContainer.appendChild(sourcesTitle);
+        
+        const sourcesList = document.createElement('ul');
+        sourcesList.className = 'list-disc pl-5 text-sm';
+        
+        sources.forEach(source => {
+            const sourceItem = document.createElement('li');
+            const sourceLink = document.createElement('a');
+            sourceLink.href = source.uri;
+            sourceLink.textContent = source.title || source.uri;
+            sourceLink.className = 'text-blue-600 dark:text-blue-400 hover:underline';
+            sourceLink.target = '_blank';
+            sourceItem.appendChild(sourceLink);
+            sourcesList.appendChild(sourceItem);
+        });
+        
+        sourcesContainer.appendChild(sourcesList);
+    }
+    
+    // Add search suggestions if available
+    if (searchSuggestions) {
+        const suggestionsDiv = document.createElement('div');
+        suggestionsDiv.className = 'mt-3 pt-3 border-t border-custom';
+        suggestionsDiv.innerHTML = searchSuggestions;
+        sourcesContainer.appendChild(suggestionsDiv);
+    }
+    
+    // Show the container if it has content
+    if (sourcesContainer.children.length > 0) {
+        sourcesContainer.style.display = 'block';
+    } else {
+        sourcesContainer.style.display = 'none';
     }
 }
 
