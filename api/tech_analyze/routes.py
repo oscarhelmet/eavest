@@ -139,7 +139,34 @@ Be specific about confluence zones, timeframe alignment, and actionable multi-ti
         result = google_model.client.models.generate_content(
             model=google_model.model_name,
             contents=content_parts,
-            config={"temperature": 0.3, "top_k": 20, "max_output_tokens": 2048}
+            config={
+                "temperature": 0.3, 
+                "top_k": 20, 
+                "top_p": 0.95,
+                "seed": 0,
+                "max_output_tokens": 65535,
+                "safety_settings": [
+                    {
+                        "category": "HARM_CATEGORY_HATE_SPEECH",
+                        "threshold": "OFF"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                        "threshold": "OFF"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                        "threshold": "OFF"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_HARASSMENT",
+                        "threshold": "OFF"
+                    }
+                ],
+                "thinking_config": {
+                    "thinking_budget": -1,
+                }
+            }
         )
         
         # Parse the response to extract structured data
@@ -292,7 +319,34 @@ Provide the response as a single, valid JSON array of such objects. No other tex
         result = google_model.client.models.generate_content(
             model=google_model.model_name,
             contents=content_parts,
-            config={"temperature": 0.2, "top_k": 10, "max_output_tokens": 4096}
+            config={
+                "temperature": 0.2, 
+                "top_k": 10, 
+                "top_p": 0.95,
+                "seed": 0,
+                "max_output_tokens": 65535,
+                "safety_settings": [
+                    {
+                        "category": "HARM_CATEGORY_HATE_SPEECH",
+                        "threshold": "OFF"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                        "threshold": "OFF"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                        "threshold": "OFF"
+                    },
+                    {
+                        "category": "HARM_CATEGORY_HARASSMENT",
+                        "threshold": "OFF"
+                    }
+                ],
+                "thinking_config": {
+                    "thinking_budget": -1,
+                }
+            }
         )
         
         # Parse the response

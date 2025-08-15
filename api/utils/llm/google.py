@@ -1,5 +1,5 @@
 from google import genai
-from google.genai.types import GenerateContentConfig, GoogleSearch, HttpOptions, Tool
+from google.genai.types import GenerateContentConfig, GoogleSearch, HttpOptions, Tool, SafetySetting, ThinkingConfig
 import json
 import os
 import logging
@@ -16,9 +16,9 @@ class Google:
         
         # Get model name from config if in app context
         if has_app_context():
-            self.model_name = model_name or current_app.config.get('DEFAULT_LLM_MODEL', 'gemini-2.0-flash-001')
+            self.model_name = model_name or current_app.config.get('DEFAULT_LLM_MODEL', 'gemini-2.5-pro')
         else:
-            self.model_name = model_name or 'gemini-2.0-flash-001'
+            self.model_name = model_name or 'gemini-2.5-pro'
             
         self.client = genai.Client(http_options=HttpOptions(api_version="v1"))
         logger.info(f"Google AI client initialized with model: {self.model_name}")
@@ -43,7 +43,10 @@ class Google:
             
             # Get config settings from app config or use defaults
             top_k = top_k or current_app.config.get('LLM_TOP_K', 20)
-            temperature = temperature or current_app.config.get('LLM_TEMPERATURE', 0.6)
+            temperature = temperature or current_app.config.get('LLM_TEMPERATURE', 1.0)
+            top_p = top_p or current_app.config.get('LLM_TOP_P', 0.95)
+            seed = current_app.config.get('LLM_SEED', 0)
+            max_tokens = max_output_tokens or current_app.config.get('LLM_MAX_OUTPUT_TOKENS', 65535)
             
             # Add Google Search tool if requested
             if with_search:
@@ -59,8 +62,30 @@ class Google:
                     temperature=temperature,
                     top_p=top_p,
                     top_k=top_k,
-                    max_output_tokens=max_output_tokens,
+                    seed=seed,
+                    max_output_tokens=max_tokens,
                     response_modalities=["TEXT"],  # Ensure text response
+                    safety_settings=[
+                        SafetySetting(
+                            category="HARM_CATEGORY_HATE_SPEECH",
+                            threshold="OFF"
+                        ),
+                        SafetySetting(
+                            category="HARM_CATEGORY_DANGEROUS_CONTENT",
+                            threshold="OFF"
+                        ),
+                        SafetySetting(
+                            category="HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                            threshold="OFF"
+                        ),
+                        SafetySetting(
+                            category="HARM_CATEGORY_HARASSMENT",
+                            threshold="OFF"
+                        )
+                    ],
+                    thinking_config=ThinkingConfig(
+                        thinking_budget=-1,
+                    ),
                 ),
             )
             
@@ -118,7 +143,10 @@ class Google:
             
             # Get config settings from app config or use defaults
             top_k = top_k or current_app.config.get('LLM_TOP_K', 20)
-            temperature = temperature or current_app.config.get('LLM_TEMPERATURE', 0.6)
+            temperature = temperature or current_app.config.get('LLM_TEMPERATURE', 1.0)
+            top_p = top_p or current_app.config.get('LLM_TOP_P', 0.95)
+            seed = current_app.config.get('LLM_SEED', 0)
+            max_tokens = max_output_tokens or current_app.config.get('LLM_MAX_OUTPUT_TOKENS', 65535)
             
             # Prepare the content with URL context
             content_parts = []
@@ -144,8 +172,30 @@ class Google:
                     temperature=temperature,
                     top_p=top_p,
                     top_k=top_k,
-                    max_output_tokens=max_output_tokens,
+                    seed=seed,
+                    max_output_tokens=max_tokens,
                     response_modalities=["TEXT"],
+                    safety_settings=[
+                        SafetySetting(
+                            category="HARM_CATEGORY_HATE_SPEECH",
+                            threshold="OFF"
+                        ),
+                        SafetySetting(
+                            category="HARM_CATEGORY_DANGEROUS_CONTENT",
+                            threshold="OFF"
+                        ),
+                        SafetySetting(
+                            category="HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                            threshold="OFF"
+                        ),
+                        SafetySetting(
+                            category="HARM_CATEGORY_HARASSMENT",
+                            threshold="OFF"
+                        )
+                    ],
+                    thinking_config=ThinkingConfig(
+                        thinking_budget=-1,
+                    ),
                 ),
                 # When using URL context with Gemini 2.0, these go in the request
                 # rather than as part of config

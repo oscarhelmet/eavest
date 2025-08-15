@@ -33,9 +33,12 @@ class Config:
     YF_CACHE_TTL = 300  # 5 minutes cache TTL
     
     # LLM settings
-    DEFAULT_LLM_MODEL = os.environ.get('DEFAULT_LLM_MODEL', 'gemini-2.0-flash-001')
-    LLM_TEMPERATURE = float(os.environ.get('LLM_TEMPERATURE', 0.6))
+    DEFAULT_LLM_MODEL = os.environ.get('DEFAULT_LLM_MODEL', 'gemini-2.5-pro')
+    LLM_TEMPERATURE = float(os.environ.get('LLM_TEMPERATURE', 1.0))
     LLM_TOP_K = int(os.environ.get('LLM_TOP_K', 20))
+    LLM_TOP_P = float(os.environ.get('LLM_TOP_P', 0.95))
+    LLM_SEED = int(os.environ.get('LLM_SEED', 0))
+    LLM_MAX_OUTPUT_TOKENS = int(os.environ.get('LLM_MAX_OUTPUT_TOKENS', 65535))
     
     @staticmethod
     def init_app(app):
